@@ -7,9 +7,10 @@ from omxplayer import OMXPlayer
 sleep(120)
 
 # Specifies URLs and where to output the sound.
-url1 = 'https://14523.live.streamtheworld.com/CLASSICALSTREAMAAC.aac'
-url2 = 'https://14923.live.streamtheworld.com/CLASSICALSTREAMAAC.aac'
-url3 = 'https://18543.live.streamtheworld.com/CLASSICALSTREAMAAC.aac'
+url1 = 'http://ice2.somafm.com/thistle-128-mp3'
+url2 = 'http://ice6.somafm.com/thistle-128-mp3'
+url3 = 'http://ice4.somafm.com/thistle-128-mp3'
+url4 = 'http://ice1.somafm.com/thistle-128-mp3'
 output = 'alsa:hw:2,0'
 
 # Starts playing.
@@ -31,7 +32,7 @@ while True:
       player.is_playing()
       sleep(10)
     except:
-#     If the URL doesn't play, tries another URL.
+#     If url1 doesn't play, tries url2.
       try:
         url = url2
         player = OMXPlayer(url, args=['-o', output])
@@ -39,7 +40,7 @@ while True:
         player.is_playing()
         sleep(10)
       except:
-#       Tries another URL.
+#       Tries url3.
         try:
           url = url3
           player = OMXPlayer(url, args=['-o', output])
@@ -47,4 +48,11 @@ while True:
           player.is_playing()
           sleep(10)
         except:
-          sleep(10)
+#         Tries url4.
+          try:
+            url = url4
+            player = OMXPlayer(url, args=['-o', output])
+            sleep(30)
+            player.is_playing()
+            sleep(10)
+          except:
