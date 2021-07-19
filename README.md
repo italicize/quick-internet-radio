@@ -19,7 +19,7 @@ The project requires about two hours, after you have the parts.
 1. [Add Omxplayer](#add-omxplayer)
 1. [Add an autostart command](#add-an-autostart-command)
 1. [Check the card number of the USB audio card](#check-the-card-number-of-the-usb-audio-card)
-1. [Download and edit the Python script](#download-and-edit-the-python-script)
+1. [Save and edit the Python script](#save-and-edit-the-python-script)
 1. [Start the radio](#start-the-radio)
 
 ## Gather the parts
@@ -92,7 +92,7 @@ To give another example, I found URLs for a classical music stream.
 1. In the tools window, click the **Network** tab.
 1. Repeat the following steps until you find three or more URLs.
    1. In the browser's menu bar, click **Reload this page** (&#8635;). 
-   2. In the tools pane, click **Clear** (&#128711;).
+   2. In the tools pane, click **Clear** (&#128683;).
    3. In the site pane, click **Play** (&#9654;).
    4. In the tools pane, right-click the line where the size is increasing.
    5. Select **Copy > Copy link address**.
@@ -199,11 +199,11 @@ On my Raspberry Pi 4, the card number of the USB audio card was 2. So, 2 was the
 
 *Note.* The output parameter came from this gist, [Playback on USB audio device . . . with Omxplayer](https://gist.github.com/thijstriemstra/c792e47edc21d9344384ff698d6fc284/).
 
-## Download and edit the Python script
+## Save and edit the Python script
 
 The Python script is ready to download and play ThistleRadio on a Raspberry Pi Zero W. Change it to play another stream.
 
-1. Open the Text Editor.
+1. Open Text Editor or Thonny.
 1. Save the file as **/home/pi/stream.py**. \
    Use the file name in the autostart command, if you used a file name other than stream.py in the autostart command.
 1. Copy and paste the code for [stream.py](https://github.com/italicize/quick-internet-radio/blob/main/stream.py).
