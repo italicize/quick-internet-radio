@@ -11,7 +11,9 @@ url1 = 'http://ice2.somafm.com/thistle-128-mp3'
 url2 = 'http://ice6.somafm.com/thistle-128-mp3'
 url3 = 'http://ice4.somafm.com/thistle-128-mp3'
 url4 = 'http://ice1.somafm.com/thistle-128-mp3'
-output = 'alsa:hw:2,0'
+output = 'alsa:hw:1,0'
+# In the output variable, try a 1 for a RPi Zero W. Try a 2 for a RPi 4.
+# To check the card numbers of audio devices, type aplay -l in Terminal.
 
 # Starts playing.
 url = url1
@@ -56,3 +58,4 @@ while True:
             player.is_playing()
             sleep(10)
           except:
+            sleep(10)
