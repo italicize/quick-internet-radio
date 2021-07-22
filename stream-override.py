@@ -25,7 +25,7 @@ def override():
 #       Looks online for an override URL.
         req = Request(lookup)
         with urlopen(req) as response:
-          override = str(response.read())        
+          override = str(response.read())
           override = override.replace("b'", "").replace("\\n'", "").replace("\\n", "")
           if override.lower().find("http") == 0:
 #           Checks that the override URL isn't already playing.
