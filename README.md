@@ -257,14 +257,14 @@ To test a Raspberry Pi Zero W, run the Python script through SSH. However, it's 
    (To confirm that OpenSSH Client is installed, **Start > Settings > Apps > Apps & features > Optional features > OpenSSH Client**.) \
    &bull; On a Mac or Linux system, open the Terminal. \
    &bull; For information about using SSH, see [SSH (Secure Shell)](https://www.raspberrypi.org/documentation/remote-access/ssh/).
-1. Type `ssh pi@IPnumber`, using the IP number you wrote down earlier. \
+1. At the prompt, type `ssh pi@IPnumber`, using the IP number you wrote down earlier. \
    Type `yes` and press **Enter**, if asked to approve the connection.
 1. Type the Raspberry Pi's password and press **Enter**. \
    The Raspberry Pi's prompt appears, `pi@raspberrypi: ~$`.
 1. Type `python3 stream.py` and press **Enter**. \
    Use the file name in the autostart command, if you used a file name other than stream.py. \
    The music starts after a two minute delay.
-1. To stop the music stream, press **Ctrl+C** twice.
+1. To stop the music stream, press **Ctrl+C** repeatedly until the Python script stops and returns you to the prompt.
 
 ### (Optional) Test the Python script on a Raspberry Pi 4
 
