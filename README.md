@@ -5,15 +5,15 @@ A Raspberry Pi Zero W or a Raspberry Pi 4, with a USB audio card and some amplif
 I made this project to provide an internet radio to an 89-year-old person with bad FM reception in her apartment. My goals for the internet radio were:
 - Make it as simple as possible. Turn up the volume to hear the music. Turn down the volume to turn off the music.
 - Make it foolproof. If it loses the Wi-Fi signal, it continuously tries to reconnect. If it is unplugged accidentally, it starts when plugged in again.
-- Make it quick to assemble. The speakers are connected to the USB port.
+- Make it quick to assemble. The speakers are connected to the 3.5 mm jack or a USB port.
 
-*Note.* If you want more a more complicated project, with more than one station, then try [this instructable](https://www.instructables.com/Senior-Radio-Raspberry-Pi/) or [this instructable](https://www.instructables.com/Fireside-Internet-Radio-Player-for-Elderly-Users-b/) or [many other instructables](https://www.instructables.com/howto/internet+radio/). Alternatively, you can make the Raspberry Pi into a dedicated music player with [Volumio](https://volumio.org/) or [Moode](https://moodeaudio.org/). But I needed quick and simple.
+*Note.* If you want more a more complicated project, with more than one station, then try [this instructable](https://www.instructables.com/Senior-Radio-Raspberry-Pi/) or [this instructable](https://www.instructables.com/Fireside-Internet-Radio-Player-for-Elderly-Users-b/) or [many other instructables](https://www.instructables.com/howto/internet+radio/). Alternatively, you can make the Raspberry Pi into a dedicated music player with [Volumio](https://volumio.org/) or [Moode](https://moodeaudio.org/). But I needed simple and quick.
 
 The project requires about two hours, after you have the parts.
 
 1. [Gather the parts](#gather-the-parts)
 1. [Find the URLs](#find-the-urls)
-1. [Set up the Raspberry Pi](#set-up-the-raspberry-pi)
+1. [Set up the Raspberry Pi 4](#set-up-the-raspberry-pi-4)
    - [(Optional) Enable SSH](#optional-enable-ssh)
 1. [Change the display settings](#change-the-display-settings)
 1. [Add Omxplayer](#add-omxplayer)
@@ -30,25 +30,25 @@ The project requires about two hours, after you have the parts.
 
 The total cost can be about $50, even if you need to buy all the parts.
 
-- Raspberry Pi Zero W in a kit with a microSD card with NOOBs, USB OTG cable, Mini HDMI to HDMI adapter, power supply, and case, such as [this kit](https://www.canakit.com/raspberry-pi-zero-wireless.html) or [this kit](https://www.adafruit.com/product/3410) for about $35. \
-Or a Raspberry Pi 4, any GB size, in a kit with a microSD card with NOOBs, Micro HDMI to HDMI cable, power supply, and case, such as [this kit](https://chicagodist.com/products/raspberry-pi-4-model-b-2gb-kits/) or [this kit](https://www.pishop.us/product/raspberry-pi-4b-starter-kit/) for about $65. \
-*Note.* Any Raspberry Pi model with Wi-Fi could work for this project, but I only tried the Zero W and the 4.
+- For [version 1](#version-1-a-rapsberry-pi-4-with-speakers), a Raspberry Pi 4, any GB size, in a kit with a microSD card, Micro HDMI to HDMI cable, power supply, and case, such as [this kit](https://chicagodist.com/products/raspberry-pi-4-model-b-2gb-kits/) or [this kit](https://www.pishop.us/product/raspberry-pi-4b-starter-kit/) for about $65. 
+- For [version 2](#version-2-a-raspberry-pi-zero-w-with-a-usb-audio-card-and-speakers), a Raspberry Pi Zero W in a kit with a microSD card, USB OTG cable, Mini HDMI to HDMI adapter, power supply, and case, such as [this kit](https://www.canakit.com/raspberry-pi-zero-wireless.html) or [this kit](https://www.adafruit.com/product/3410) for about $35. \
+*Note.* Any Raspberry Pi model with Wi-Fi can work for this project, but I only tried the Zero W and the 4.
 - USB audio card, about $7 for [low end](https://www.bhphotovideo.com/c/product/1367674-REG/sabrent_au_emcb_aluminum_usb_external_stereo.html), up to $200 for [high end](https://www.bhphotovideo.com/c/product/1244852-REG/audioquest_dragonflyred_dragonfly_red_usb.html). \
-*Note.* The USB audio card isn't strictly necessary with a Raspberry Pi 4, which has a 3.5 mm audio jack, but [the sound is better from a USB audio card](https://learn.adafruit.com/usb-audio-cards-with-a-raspberry-pi/).
-- External speakers with a 3.5 mm audio plug and a power supply, for about $5 from a thrift store, up to $220 for [high end](https://www.bhphotovideo.com/c/product/1532184-REG/mackie_cr5_xbt_creative_reference_series.html). \
+*Note.* The USB audio card isn't strictly necessary with [version 1](#version-1-a-rapsberry-pi-4-with-speakers), because a Raspberry Pi 4 has a 3.5 mm audio jack, but [the sound is better from a USB audio card](https://learn.adafruit.com/usb-audio-cards-with-a-raspberry-pi/).
+- External speakers with a 3.5 mm audio plug and a power supply, for about $5 for [used](https://www.ebay.com/sch/i.html?_nkw=logitech+external+speakers), up to $200 for [high end](https://www.bhphotovideo.com/c/product/1532184-REG/mackie_cr5_xbt_creative_reference_series.html). \
 *Note.* If you see external speakers in a thirft store, be sure they have a power supply that fits.
 - Keyboard, mouse, monitor, HDMI cable, and a laptop or other computer. \
-*Note.* The keyboard and other items are only for set up, not for operation.
+*Note.* The keyboard and other items are only for setup, not for operation.
 
 ## Find the URLs
 
-Find the URLs of an internet radio station. Try to find more than one URL, in case one is overcrowded and won't accept another connection. Save the URLs to use when you edit the Python script.
+Find the URLs of an internet radio station. Try to find more than one URL, in case one is over committed and won't accept another connection. Save the URLs to use when you edit the Python script.
 
-*Note.* Finding the URLs doesn't need to be the first task. You can [set up the Raspberry Pi](#set-up-the-raspberry-pi) first, then use the Chromium browser on the Raspberry Pi to find the URLs. But if there is one specific station you want to hear, you might want to find its URLs before you go further.
+*Note.* Finding the URLs doesn't need to be the first task. You can [set up the Raspberry Pi 4](#set-up-the-raspberry-pi-4) first, then use the Chromium browser on the Raspberry Pi to find the URLs. But if there is one specific station you want to hear, you might want to find its URLs before you go further.
 
-#### (Example) URLs for SomaFM channels are easy to find
+### (Example) URLs for SomaFM channels are easy to find
 
-The URLs in the Python script&mdash;before you customize it&mdash;are streams found at SomaFM.
+The URLs in the Python script&mdash;before you customize it&mdash;are streams at SomaFM.
 
 1. Open <https://somafm.com/>.
 1. Click a channel, such as [ThistleRadio](https://somafm.com/thistle/).
@@ -61,7 +61,7 @@ The URLs in the Python script&mdash;before you customize it&mdash;are streams fo
 1. Open the file with a text editor.
 1. Delete everything in the file except the URLs (and save the file).
 
-For example, my downloaded file was this:
+For example, thistle.pls.txt looked like this:
 ```txt
 [playlist]
 numberofentries=4
@@ -79,7 +79,8 @@ Title4=SomaFM: ThistleRadio (#4): Exploring music from Celtic roots and branches
 Length4=-1
 Version=2
 ```
-I changed it to this:
+
+I changed thistle.pls.txt to this:
 ```txt
 http://ice2.somafm.com/thistle-128-mp3
 http://ice6.somafm.com/thistle-128-mp3
@@ -87,7 +88,7 @@ http://ice4.somafm.com/thistle-128-mp3
 http://ice1.somafm.com/thistle-128-mp3
 ```
 
-#### (Example) URLs for other stations might be harder to find
+### (Example) URLs for other stations might be harder to find
 
 To give another example, I found URLs for a classical music stream.
 
@@ -99,7 +100,7 @@ To give another example, I found URLs for a classical music stream.
    1. In the browser's menu bar, click **Reload this page** (&#8635;). 
    2. In the tools pane, click **Clear** (&#128683;).
    3. In the site pane, click **Play** (&#9654;).
-   4. In the tools pane, right-click the line where the size is increasing.
+   4. In the tools pane, right-click the line where the file size is increasing.
    5. Select **Copy > Copy link address**.
    6. Open a text editor and paste the link.
    7. Delete extra parameters after the URL (and save the file).
@@ -119,17 +120,19 @@ https://14923.live.streamtheworld.com/CLASSICALSTREAMAAC.aac
 https://18543.live.streamtheworld.com/CLASSICALSTREAMAAC.aac
 ```
 
-## Set up the Raspberry Pi
+## Version 1, a Rapsberry Pi 4 with speakers
+
+The first version I made was the simplest and quickest. It was only speakers attached to a Raspberry Pi 4. (The [second version](#version-2-a-raspberry-pi-zero-w-with-a-usb-audio-card-and-speakers) was a Raspberry Pi Zero W with a USB audio card and spearkers.)
+
+### Set up the Raspberry Pi 4
 
 Install Raspberry PI OS and connect to Wi-Fi.
 
-1. Place the Raspberry Pi in its case, according to the case instructions. \
-   &bull; A Raspberry Pi Zero W probably fits in its case after the microSD card is inserted. \
-   &bull; A Raspberry Pi 4 probably fits in its case before the microSD card is inserted.
-1. Insert a microSD card with either NOOBs or Rapsberry Pi OS. \
-   If you have a blank microSD card, install Raspberry Pi OS on it with [Raspberry Pi Imager](https://www.raspberrypi.org/software/).
+1. Place the Raspberry Pi in its case, according to the case instructions.
+1. Insert a microSD card that has a copy of either NOOBs or Rapsberry Pi OS. \
+   If the microSD card is blank, first insert it in another computer and install Raspberry Pi OS on it with [Raspberry Pi Imager](https://www.raspberrypi.org/software/).
 1. Connect a monitor, keyboard, and mouse. \
-   If using a Raspberry Pi 4, connect the USB audio card too.
+   Connect the USB audio card, if using .
 1. Connect a power supply. \
    The Raspberry Pi boots.
 1. If the microSD card has NOOBs, select Rapsberry Pi OS and install it.
@@ -141,7 +144,7 @@ Install Raspberry PI OS and connect to Wi-Fi.
 
 ### (Optional) Enable SSH
 
-Access through SSH isn't required for this project, but it is convenient after the monitor and keyboard are disconnected.
+Access through SSH isn't required for this project, but might be convenient after the monitor and keyboard are disconnected.
 
 1. In Terminal, type `sudo raspi-config` and press **Enter**.
 1. Select **Interface Options**.
@@ -219,6 +222,75 @@ The Python script is ready to download and play ThistleRadio on a Raspberry Pi Z
    See [stream-classical.py](https://github.com/italicize/quick-internet-radio/blob/main/stream-classical.py).
 1. Save the file.
 
+### (Optional) Test the Python script on a Raspberry Pi 4
+
+To test a Raspberry Pi 4, run the Python script in Terminal.
+
+1. Set up the external speakers.
+   1. Connect the external speakers to the USB audio card.
+   1. Connect the external speakers to a power supply.
+   1. Turn on the external speakers and adjust the volume to about 50 percent.
+1. In Terminal, type `python3 stream.py` and press **Enter**. \
+   Use the file name in the autostart command, if you used a file name other than stream.py. \
+   The music starts after a two minute delay.
+1. To stop the music stream, press **Ctrl+C** twice in Terminal. \
+   If Terminal is closed, open Terminal, type `killall omxplayer.bin && killall python3` and press **Enter**.
+
+## Start the radio
+
+1. Shut down the Raspberry Pi. \
+   &bull; On the desktop, click the raspberry menu and select **Shutdown**. \
+   &bull; In Terminal, type `sudo shutdown -h now` and press **Enter**.
+1. Disconnect the power supply. \
+   Disconect the monitor, keyboard, and mouse.
+1. Connect the USB audio card and external speakers. \
+   1. Connect the USB audio card to the Raspberry Pi.
+   1. Connect the external speakers to the USB audio card.
+   1. Connect the external speakers to a power supply.
+1. Connect the Raspberry Pi to a power supply. \
+   The Raspberry Pi boots. \
+   After a two minute delay, the music stream plays.
+
+*Note.* The two minute delay is in the code to wait for the Raspberry Pi to finish booting.
+
+### Move the radio to a new location
+
+If you move the Raspberry Pi to a new location later, remember to bring a keyboard, mouse, and cable for a monitor or TV, so that you can connect to Wi-Fi at the new location. Alternatively, bring a laptop and change settings on the Raspberry Pi [using SSH through USB](https://desertbot.io/blog/headless-pi-zero-ssh-access-over-usb-windows). After connecting to Wi-Fi in the new location, [start the radio](#start-the-radio).
+
+## Version 2, a Raspberry Pi Zero W with a USB audio card and speakers
+
+### Set up the Raspberry Pi Zero W
+
+Install Raspberry PI OS and connect to Wi-Fi.
+
+1. Place the Raspberry Pi in its case, according to the case instructions. \
+   &bull; A Raspberry Pi Zero W probably fits in its case after the microSD card is inserted. \
+   &bull; A Raspberry Pi 4 probably fits in its case before the microSD card is inserted.
+1. Insert a microSD card with either NOOBs or Rapsberry Pi OS. \
+   If you have a blank microSD card, install Raspberry Pi OS on it with [Raspberry Pi Imager](https://www.raspberrypi.org/software/).
+1. Connect a monitor, keyboard, and mouse. \
+   If using a Raspberry Pi 4, connect the USB audio card too.
+1. Connect a power supply. \
+   The Raspberry Pi boots.
+1. If the microSD card has NOOBs, select Rapsberry Pi OS and install it.
+1. When prompted, select settings, including country, password, and Wi-Fi.
+1. When prompted, update the system.
+1. When prompted, restart.
+
+*Note.* Raspberry Pi OS Lite is probably a better option than a full installation of Raspberry Pi OS with desktop and recommended software. However, I wanted this project to quick and simple, so I used the operating system I knew best.
+
+### (Optional) Enable SSH
+
+Access through SSH isn't required for this project, but might be convenient after the monitor and keyboard are disconnected.
+
+1. In Terminal, type `sudo raspi-config` and press **Enter**.
+1. Select **Interface Options**.
+1. Select **SSH**.
+1. Select **Yes** and **OK** and **Finish**.
+1. Type `hostname -I` and press **Enter**. \
+   The Raspberry Pi's IP number is displayed.
+1. Write down the IP number to use later.
+
 ### (Optional) Add an override URL to the Python script
 
 If you want the internet radio to play a different stream occassionally, copy and paste the code for [stream-override.py](https://github.com/italicize/quick-internet-radio/blob/main/stream-override.py). That code gives some remote control over what the internet radio plays. 
@@ -266,40 +338,10 @@ To test a Raspberry Pi Zero W, run the Python script through SSH. However, it's 
    The music starts after a two minute delay.
 1. To stop the music stream, press **Ctrl+C** repeatedly until the Python script stops and returns you to the prompt.
 
-### (Optional) Test the Python script on a Raspberry Pi 4
 
-To test a Raspberry Pi 4, run the Python script in Terminal.
 
-1. Set up the external speakers.
-   1. Connect the external speakers to the USB audio card.
-   1. Connect the external speakers to a power supply.
-   1. Turn on the external speakers and adjust the volume to about 50 percent.
-1. In Terminal, type `python3 stream.py` and press **Enter**. \
-   Use the file name in the autostart command, if you used a file name other than stream.py. \
-   The music starts after a two minute delay.
-1. To stop the music stream, press **Ctrl+C** twice in Terminal. \
-   If Terminal is closed, open Terminal, type `killall omxplayer.bin && killall python3` and press **Enter**.
 
-## Start the radio
 
-1. Shut down the Raspberry Pi. \
-   &bull; On the desktop, click the raspberry menu and select **Shutdown**. \
-   &bull; In Terminal, type `sudo shutdown -h now` and press **Enter**.
-1. Disconnect the power supply. \
-   Disconect the monitor, keyboard, and mouse.
-1. Connect the USB audio card and external speakers. \
-   1. Connect the USB audio card to the Raspberry Pi.
-   1. Connect the external speakers to the USB audio card.
-   1. Connect the external speakers to a power supply.
-1. Connect the Raspberry Pi to a power supply. \
-   The Raspberry Pi boots. \
-   After a two minute delay, the music stream plays.
-
-*Note.* The two minute delay is in the code to wait for the Raspberry Pi to finish booting.
-
-### Move the radio to a new location
-
-If you move the Raspberry Pi to a new location later, remember to bring a keyboard, mouse, and cable for a monitor or TV, so that you can connect to Wi-Fi at the new location. Alternatively, bring a laptop and change settings on the Raspberry Pi [using SSH through USB](https://desertbot.io/blog/headless-pi-zero-ssh-access-over-usb-windows). After connecting to Wi-Fi in the new location, [start the radio](#start-the-radio).
 
 ---
 
