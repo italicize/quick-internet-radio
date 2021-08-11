@@ -132,7 +132,7 @@ Install Raspberry PI OS and connect to Wi-Fi.
 1. Insert a microSD card that has a copy of either NOOBs or Rapsberry Pi OS. \
    If the microSD card is blank, first insert it in another computer and install Raspberry Pi OS on it with [Raspberry Pi Imager](https://www.raspberrypi.org/software/).
 1. Connect a monitor, keyboard, and mouse. \
-   Connect the USB audio card, if using .
+   Connect the USB audio card, if using.
 1. Connect a power supply. \
    The Raspberry Pi boots.
 1. If the microSD card has NOOBs, select Rapsberry Pi OS and install it.
@@ -140,25 +140,12 @@ Install Raspberry PI OS and connect to Wi-Fi.
 1. When prompted, update the system.
 1. When prompted, restart.
 
-*Note.* Raspberry Pi OS Lite is probably a better option than a full installation of Raspberry Pi OS with desktop and recommended software. However, I wanted this project to quick and simple, so I used the operating system I knew best.
-
-### (Optional) Enable SSH
-
-Access through SSH isn't required for this project, but might be convenient after the monitor and keyboard are disconnected.
-
-1. In Terminal, type `sudo raspi-config` and press **Enter**.
-1. Select **Interface Options**.
-1. Select **SSH**.
-1. Select **Yes** and **OK** and **Finish**.
-1. Type `hostname -I` and press **Enter**. \
-   The Raspberry Pi's IP number is displayed.
-1. Write down the IP number to use later.
-
 ## Change the display settings
 
 Specify the monitor resolution in the settings.
 
-1. In Terminal, type `xdpyinfo | grep dimensions` and press **Enter**. \
+1. Open Terminal.
+1. Type `xdpyinfo | grep dimensions` and press **Enter**. \
    The resolution of your monitor is displayed. (I found the command [on this page](https://www.cyberciti.biz/faq/how-do-i-find-out-screen-resolution-of-my-linux-desktop/).) \
    For example, the resolution of my monitor was 1920x1200 pixels. 
 1. Type `sudo raspi-config` and press **Enter**.
@@ -290,6 +277,112 @@ Access through SSH isn't required for this project, but might be convenient afte
 1. Type `hostname -I` and press **Enter**. \
    The Raspberry Pi's IP number is displayed.
 1. Write down the IP number to use later.
+
+## Change the display settings
+
+Specify the monitor resolution in the settings.
+
+1. Open Terminal
+1. Type `xdpyinfo | grep dimensions` and press **Enter**. \
+   The resolution of your monitor is displayed. (I found the command [on this page](https://www.cyberciti.biz/faq/how-do-i-find-out-screen-resolution-of-my-linux-desktop/).) \
+   For example, the resolution of my monitor was 1920x1200 pixels. 
+1. Type `sudo raspi-config` and press **Enter**.
+1. Select **Display Options**. 
+1. Select **Resolution**
+1. Select the resolution of your monitor. \
+   For example, I selected **DMT Mode 59 1920x1200 60 Hz 16:10**. \
+   [CEA is for TVs and DMT is for monitors](https://pimylifeup.com/raspberry-pi-screen-resolution/).
+1. Select **OK**, select **Finish**, and select **No** (not to reboot).
+
+*Note.* There are two reasons to select a specific resolution, to keep the card number of your USB audio card from changing after the monitor is disconnected and to [enable the Raspberry Pi to boot without a monitor](https://www.raspberrypi.org/forums/viewtopic.php?t=253312#p1547478).
+
+## Add OMXPlayer
+
+Install OMXPlayer and a Python library for it.
+
+In Terminal, type `sudo apt install omxplayer && pip3 install omxplayer-wrapper && sudo apt clean` and press **Enter**.
+
+*Note.* I tried VLC media player, which is installed with the Raspberry Pi OS, but VLC stayed open even when the Wi-Fi signal was lost. By constrast, OMXPlayer closed when the Wi-Fi signal was lost, which let the Python script detect a problem and try to reconnect.
+
+## Add an autostart command
+
+Edit the autostart file.
+
+1. In Terminal, type `sudo nano /etc/xdg/lxsession/LXDE-pi/autostart` and press **Enter**.
+1. Move down to the line beginning `@xscreensaver`.
+1. Type `@python3 /home/pi/stream.py &` and press **Enter**. \
+   You can use a different name for the Python script, such as thistle.py or classical.py instead of stream.py.
+1. Press **Ctrl+X** and **Y** and **Enter**, which saves the file.
+
+*Note.* A Python script can be made to [autostart in many ways](https://www.itechfy.com/tech/auto-run-python-program-on-raspberry-pi-startup/), supposedly. This way that worked for me, which I found in this project, [1970 Flirt Pi Internet Radio](https://www.instructables.com/1970-Flirt-Pi-Internet-Radio/).
+
+## Check the card number of the USB audio card
+
+If using a Raspberry Pi 4, find the card number of the USB audio card.
+
+In Terminal, type `aplay -l` and press **Enter**. \
+The card number of the USB audio card is displayed, with other information.
+
+On my Raspberry Pi 4, the card number of the USB audio card was 2. So, 2 was the number I put in the Python script in the next step. (If not using a USB audio card, use the card number of the 3.5 mm audio jack.)
+
+*Note.* The output parameter came from this gist, [Playback on USB audio device . . . with Omxplayer](https://gist.github.com/thijstriemstra/c792e47edc21d9344384ff698d6fc284/).
+
+## Save and edit the Python script
+
+The Python script is ready to download and play ThistleRadio on a Raspberry Pi Zero W. Change it to play another stream.
+
+1. Open Text Editor or Thonny.
+1. Save the file as **/home/pi/stream.py**. \
+   Use the file name in the autostart command, if you used a file name other than stream.py in the autostart command.
+1. Copy and paste the code for [stream.py](https://github.com/italicize/quick-internet-radio/blob/main/stream.py).
+1. If using a Raspberry Pi 4, change the 1 in the output parameter to the card number you found. \
+   For example, if the card number as a 2, change the code to `output = 'alsa:hw:2,0'`. \
+   (If using a Raspberry Pi Zero W, leave the 1 in the output parameter, `output = 'alsa:hw:1,0'`.)
+1. Change the URLs to the URLs you found.
+1. If you found fewer than four URLs, then delete the unused lines of code. \
+   For example, the classical stream has three URLs and requires these changes: \
+   &bull; Change url1, url2, and url3 to the classical stream. \
+   &bull; Delete the line beginning `url4 =`. \
+   &bull; Delete eight lines from `Tries url4` to `except:`. \
+   See [stream-classical.py](https://github.com/italicize/quick-internet-radio/blob/main/stream-classical.py).
+1. Save the file.
+
+### (Optional) Test the Python script on a Raspberry Pi 4
+
+To test a Raspberry Pi 4, run the Python script in Terminal.
+
+1. Set up the external speakers.
+   1. Connect the external speakers to the USB audio card.
+   1. Connect the external speakers to a power supply.
+   1. Turn on the external speakers and adjust the volume to about 50 percent.
+1. In Terminal, type `python3 stream.py` and press **Enter**. \
+   Use the file name in the autostart command, if you used a file name other than stream.py. \
+   The music starts after a two minute delay.
+1. To stop the music stream, press **Ctrl+C** twice in Terminal. \
+   If Terminal is closed, open Terminal, type `killall omxplayer.bin && killall python3` and press **Enter**.
+
+## Start the radio
+
+1. Shut down the Raspberry Pi. \
+   &bull; On the desktop, click the raspberry menu and select **Shutdown**. \
+   &bull; In Terminal, type `sudo shutdown -h now` and press **Enter**.
+1. Disconnect the power supply. \
+   Disconect the monitor, keyboard, and mouse.
+1. Connect the USB audio card and external speakers. \
+   1. Connect the USB audio card to the Raspberry Pi.
+   1. Connect the external speakers to the USB audio card.
+   1. Connect the external speakers to a power supply.
+1. Connect the Raspberry Pi to a power supply. \
+   The Raspberry Pi boots. \
+   After a two minute delay, the music stream plays.
+
+*Note.* The two minute delay is in the code to wait for the Raspberry Pi to finish booting.
+
+### Move the radio to a new location
+
+If you move the Raspberry Pi to a new location later, remember to bring a keyboard, mouse, and cable for a monitor or TV, so that you can connect to Wi-Fi at the new location. Alternatively, bring a laptop and change settings on the Raspberry Pi [using SSH through USB](https://desertbot.io/blog/headless-pi-zero-ssh-access-over-usb-windows). After connecting to Wi-Fi in the new location, [start the radio](#start-the-radio).
+
+
 
 ### (Optional) Add an override URL to the Python script
 
